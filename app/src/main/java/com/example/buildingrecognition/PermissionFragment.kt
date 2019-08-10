@@ -24,7 +24,6 @@ internal fun Context.hasPermissions(permissions: Array<String>) =
 class PermissionFragment : Fragment() {
 
     lateinit var requestPermissions: Array<String>
-    var requestCode: Int = PERMISSION_REQUEST_CODE
 
     var permissionCallback: ((grantedPermissions: List<String>?,
                               deniedPermissions: List<String>?) -> Unit)? = null
@@ -37,7 +36,7 @@ class PermissionFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (!requireActivity().hasPermissions(requestPermissions)) {
-            requestPermissions(requestPermissions, requestCode)
+            requestPermissions(requestPermissions, PERMISSION_REQUEST_CODE)
         } else {
             permissionCallback?.invoke(requestPermissions.asList(), null)
             fragmentManager?.beginTransaction()?.remove(this)
@@ -45,17 +44,17 @@ class PermissionFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode != this@PermissionFragment.requestCode) {
+        if (requestCode != PERMISSION_REQUEST_CODE) {
             fragmentManager?.beginTransaction()?.remove(this)
             return
         }
         val grantedPermissions = mutableListOf<String>()
         val deniedPermissions = mutableListOf<String>()
-        grantResults.forEach {
+        grantResults.forEachIndexed { index, it ->
             if (it == PackageManager.PERMISSION_GRANTED) {
-                grantedPermissions.add(permissions[it])
+                grantedPermissions.add(permissions[index])
             } else if (it == PackageManager.PERMISSION_DENIED) {
-                deniedPermissions.add(permissions[it])
+                deniedPermissions.add(permissions[index])
             }
         }
         permissionCallback?.invoke(grantedPermissions, deniedPermissions)

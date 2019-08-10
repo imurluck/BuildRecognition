@@ -43,7 +43,7 @@ class AlbumFragment : Fragment() {
     private fun startChoosePhoto() {
         Matisse.from(this)
             .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
-            .theme(R.style.Matisse_Zhihu)
+            .theme(R.style.AlbumStyle)
             .countable(true)
             .thumbnailScale(0.85F)
             .maxSelectable(PHOTO_MAX_SELECTABLE)
@@ -74,7 +74,7 @@ class AlbumFragment : Fragment() {
         Luban.with(activity)
             .load(photoUrl)
             .ignoreBy(100)
-            .setTargetDir(activity?.filesDir?.absolutePath)
+            .setTargetDir(activity?.externalMediaDirs?.firstOrNull()?.absolutePath)
             .setFocusAlpha(false)
             .filter {
                 !TextUtils.isEmpty(it)
