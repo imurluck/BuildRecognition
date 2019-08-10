@@ -17,10 +17,8 @@
 package com.example.buildingrecognition
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.Camera
@@ -34,7 +32,10 @@ import android.os.HandlerThread
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Rational
-import android.view.*
+import android.view.LayoutInflater
+import android.view.TextureView
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import androidx.camera.core.*
@@ -46,12 +47,9 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.buildingrecognition.constant.KEY_EVENT_ACTION
-import com.example.buildingrecognition.constant.KEY_EVENT_EXTRA
 import com.example.buildingrecognition.constant.getOutputDirectory
 import com.example.buildingrecognition.extensions.ANIMATION_FAST_MILLIS
 import com.example.buildingrecognition.extensions.ANIMATION_SLOW_MILLIS
-import com.example.buildingrecognition.extensions.simulateClick
 import com.example.buildingrecognition.utils.AutoFitPreviewBuilder
 import java.io.File
 import java.nio.ByteBuffer
@@ -83,20 +81,6 @@ class CameraFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
     private var imageAnalyzer: ImageAnalysis? = null
 
-    // Volume down button receiver
-    private val volumeDownReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val keyCode = intent.getIntExtra(KEY_EVENT_EXTRA, KeyEvent.KEYCODE_UNKNOWN)
-            when (keyCode) {
-                // When the volume down button is pressed, simulate a shutter button click
-                KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                    val shutter = container
-                            .findViewById<ImageButton>(R.id.camera_capture_button)
-                    shutter.simulateClick()
-                }
-            }
-        }
-    }
 
     /** Internal reference of the [DisplayManager] */
     private lateinit var displayManager: DisplayManager
@@ -127,20 +111,12 @@ class CameraFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Make sure that all permissions are still present, since user could have removed them
-        //  while the app was on paused state
-//        if (!PermissionsFragment.hasPermissions(requireContext())) {
-//            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-//                    CameraFragmentDirections.actionCameraToPermissions())
-//
-//        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         // Unregister the broadcast receivers and listeners
-        broadcastManager.unregisterReceiver(volumeDownReceiver)
         displayManager.unregisterDisplayListener(displayListener)
     }
 
@@ -211,9 +187,7 @@ class CameraFragment : Fragment() {
         viewFinder = container.findViewById(R.id.view_finder)
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
-        // Set up the intent filter that will receive events from our main activity
-        val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
-        broadcastManager.registerReceiver(volumeDownReceiver, filter)
+
 
         // Every time the orientation of device changes, recompute layout
         displayManager = viewFinder.context
