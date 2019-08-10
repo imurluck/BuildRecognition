@@ -1,6 +1,7 @@
-package com.example.buildingrecognition
+package com.example.buildingrecognition.constant
 
 import android.content.Context
+import com.example.buildingrecognition.R
 import java.io.File
 
 /**

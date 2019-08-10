@@ -1,18 +1,38 @@
-package com.example.buildingrecognition
+package com.example.buildingrecognition.main
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import com.example.buildingrecognition.AlbumFragment
+import com.example.buildingrecognition.BaseActivity
+import com.example.buildingrecognition.PermissionFragment
+import com.example.buildingrecognition.R
+import com.example.buildingrecognition.recognition.RecognitionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setupAlbumTv()
+
+        setupRecognitionTv()
+    }
+
+    private fun setupRecognitionTv() {
+        recognitionTv.setOnClickListener {
+            PermissionFragment().apply {
+                requestPermissions = arrayOf(Manifest.permission.CAMERA)
+                permissionCallback = { grantedPermissions, _ ->
+                    if (grantedPermissions?.contains(Manifest.permission.CAMERA)!!) {
+                        startActivity(Intent(this@MainActivity, RecognitionActivity::class.java))
+                    }
+                }
+            }.request(supportFragmentManager)
+        }
     }
 
     private fun setupAlbumTv() {
@@ -24,8 +44,8 @@ class MainActivity : AppCompatActivity() {
                         getPhotoFromAlbum()
                     }
                 }
-                request(supportFragmentManager)
-            }
+            }.request(supportFragmentManager)
+
         }
     }
 

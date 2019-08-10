@@ -46,9 +46,13 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.buildingrecognition.constant.KEY_EVENT_ACTION
+import com.example.buildingrecognition.constant.KEY_EVENT_EXTRA
+import com.example.buildingrecognition.constant.getOutputDirectory
 import com.example.buildingrecognition.extensions.ANIMATION_FAST_MILLIS
 import com.example.buildingrecognition.extensions.ANIMATION_SLOW_MILLIS
 import com.example.buildingrecognition.extensions.simulateClick
+import com.example.buildingrecognition.utils.AutoFitPreviewBuilder
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat

@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package com.example.buildingrecognition
+package com.example.buildingrecognition.utils
 
 import android.content.Context
 import android.graphics.Matrix
 import android.hardware.display.DisplayManager
 import android.util.Log
 import android.util.Size
-import android.view.Display
-import android.view.Surface
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
-import java.lang.IllegalArgumentException
 import java.lang.ref.WeakReference
-import java.util.Objects
+import java.util.*
 
 /**
  * Builder for [Preview] that takes in a [WeakReference] of the view finder and [PreviewConfig],
@@ -72,7 +67,10 @@ class AutoFitPreviewBuilder private constructor(
             val viewFinder = viewFinderRef.get() ?: return
             if (displayId == viewFinderDisplay) {
                 val display = displayManager.getDisplay(displayId)
-                val rotation = getDisplaySurfaceRotation(display)
+                val rotation =
+                    getDisplaySurfaceRotation(
+                        display
+                    )
                 updateTransform(viewFinder, rotation, bufferDimens, viewFinderDimens)
             }
         }
@@ -85,7 +83,9 @@ class AutoFitPreviewBuilder private constructor(
 
         // Initialize the display and rotation from texture view information
         viewFinderDisplay = viewFinder.display.displayId
-        viewFinderRotation = getDisplaySurfaceRotation(viewFinder.display) ?: 0
+        viewFinderRotation = getDisplaySurfaceRotation(
+            viewFinder.display
+        ) ?: 0
 
         // Initialize public use-case with the given config
         useCase = Preview(config)
@@ -108,7 +108,10 @@ class AutoFitPreviewBuilder private constructor(
 
             // Apply relevant transformations
             bufferRotation = it.rotationDegrees
-            val rotation = getDisplaySurfaceRotation(viewFinder.display)
+            val rotation =
+                getDisplaySurfaceRotation(
+                    viewFinder.display
+                )
             updateTransform(viewFinder, rotation, it.textureSize, viewFinderDimens)
         }
 
@@ -117,7 +120,10 @@ class AutoFitPreviewBuilder private constructor(
             val viewFinder = view as TextureView
             val newViewFinderDimens = Size(right - left, bottom - top)
             Log.d(TAG, "View finder layout changed. Size: $newViewFinderDimens")
-            val rotation = getDisplaySurfaceRotation(viewFinder.display)
+            val rotation =
+                getDisplaySurfaceRotation(
+                    viewFinder.display
+                )
             updateTransform(viewFinder, rotation, bufferDimens, newViewFinderDimens)
         }
 

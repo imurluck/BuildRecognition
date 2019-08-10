@@ -5,7 +5,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".main.MainActivity">
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_bg"/>
 
     <TextView
             android:id="@+id/albumTv"
@@ -13,6 +19,7 @@
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Caption"
             android:text="@string/goto_album_btn"
+            android:textColor="@color/selector_button_text"
             android:drawableEnd="@drawable/ic_chevron_right_grey_16dp"
             android:gravity="center_vertical"
             android:layout_marginBottom="24dp"
@@ -27,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/white"
+            android:textColor="@color/selector_button_text"
             android:text="@string/goto_recognition_btn"
             android:background="@drawable/bg_recognition_btn"
             android:paddingStart="30dp"
