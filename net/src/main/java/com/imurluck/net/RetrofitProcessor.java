@@ -33,7 +33,7 @@ public class RetrofitProcessor implements IHttpProcessor {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         client = builder.connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
                 .addInterceptor(loggingInterceptor)
                 .build();
     }
