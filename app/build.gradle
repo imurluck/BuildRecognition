@@ -48,9 +48,6 @@ dependencies {
     def matisseVersion = "0.4.3"
     implementation "com.zhihu.android:matisse:$matisseVersion"
 
-    //glide
-    def glideVersion = "4.8.0"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
 
     // CameraX
     def camerax_version = "1.0.0-alpha03"
@@ -60,5 +57,6 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation project(path: ':net')
 
 }

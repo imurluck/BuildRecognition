@@ -11,7 +11,7 @@ import java.io.File
  */
 
 
-
+internal const val KEY_ARG_PHOTO_URL = "key_arg_photo_url"
 
 
 const val KEY_EVENT_ACTION = "key_event_action"

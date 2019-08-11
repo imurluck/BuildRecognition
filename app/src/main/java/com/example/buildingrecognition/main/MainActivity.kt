@@ -5,10 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.example.buildingrecognition.AlbumFragment
-import com.example.buildingrecognition.BaseActivity
+import com.example.buildingrecognition.base.BaseActivity
 import com.example.buildingrecognition.PermissionFragment
 import com.example.buildingrecognition.R
 import com.example.buildingrecognition.recognition.RecognitionActivity
+import com.example.buildingrecognition.widget.RecognitionDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -56,6 +57,7 @@ class MainActivity : BaseActivity() {
         AlbumFragment().apply {
             onPhotoPickResult = {
                 Log.e(TAG, "getPhotoFromAlbum -> $it")
+                RecognitionDialogFragment.show(it, supportFragmentManager)
             }
         }.startChoose(supportFragmentManager)
     }

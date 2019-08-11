@@ -1,4 +1,4 @@
-package com.example.buildingrecognition
+package com.example.buildingrecognition.base
 
 import android.graphics.Color
 import android.os.Build

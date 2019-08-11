@@ -29,6 +29,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Rational
@@ -51,6 +52,9 @@ import com.example.buildingrecognition.constant.getOutputDirectory
 import com.example.buildingrecognition.extensions.ANIMATION_FAST_MILLIS
 import com.example.buildingrecognition.extensions.ANIMATION_SLOW_MILLIS
 import com.example.buildingrecognition.utils.AutoFitPreviewBuilder
+import com.example.buildingrecognition.widget.RecognitionDialogFragment
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
@@ -163,6 +167,8 @@ class CameraFragment : Fragment() {
                 setGalleryThumbnail(photoFile)
             }
 
+            compressAndStartRecognition(photoFile.absolutePath)
+
             // Implicit broadcasts will be ignored for devices running API
             // level >= 24, so if you only target 24+ you can remove this statement
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -178,6 +184,34 @@ class CameraFragment : Fragment() {
             MediaScannerConnection.scanFile(
                     context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null)
         }
+    }
+
+    /**
+     * 压缩 并打开识别Dialog
+     * @param photoUrl 摄像头capture 后的图片地址
+     */
+    private fun compressAndStartRecognition(photoUrl: String) {
+        Luban.with(activity)
+            .load(photoUrl)
+            .ignoreBy(100)
+            .setTargetDir(activity?.externalMediaDirs?.firstOrNull()?.absolutePath)
+            .setFocusAlpha(false)
+            .filter {
+                !TextUtils.isEmpty(it)
+            }.setCompressListener(object : OnCompressListener {
+                override fun onSuccess(file: File) {
+                    fragmentManager?.let {
+                        RecognitionDialogFragment.show(file.absolutePath, it)
+                    }
+                }
+
+                override fun onError(e: Throwable?) {
+                }
+
+                override fun onStart() {
+                }
+
+            }).launch()
     }
 
     @SuppressLint("MissingPermission")
@@ -343,10 +377,16 @@ class CameraFragment : Fragment() {
         }
 
         // Listener for button used to view last photo
-//        controls.findViewById<ImageButton>(R.id.photo_view_button).setOnClickListener {
-//            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-//                    CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath))
-//        }
+        controls.findViewById<ImageButton>(R.id.photo_view_button).setOnClickListener {
+            fragmentManager?.apply {
+                AlbumFragment().apply {
+                    compress = false
+                    onPhotoPickResult = {
+                        compressAndStartRecognition(it)
+                    }
+                }.startChoose(this)
+            }
+        }
     }
 
 

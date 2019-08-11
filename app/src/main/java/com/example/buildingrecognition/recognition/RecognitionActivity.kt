@@ -1,9 +1,9 @@
 package com.example.buildingrecognition.recognition
 
 import android.os.Bundle
-import com.example.buildingrecognition.BaseActivity
 import com.example.buildingrecognition.CameraFragment
 import com.example.buildingrecognition.R
+import com.example.buildingrecognition.base.BaseActivity
 
 class RecognitionActivity : BaseActivity() {
 

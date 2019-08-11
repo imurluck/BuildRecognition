@@ -31,4 +31,7 @@
 
     <string name="goto_album_btn">从相册上传</string>
     <string name="goto_recognition_btn">拍照识别</string>
+
+    <string name="recognition_status_ing">正在识别中...</string>
+    <string name="recognition_status_failed">识别失败，点击重试...</string>
 </resources>
