@@ -13,6 +13,7 @@ data class Building(
     private val houseNumber: String?,
     private val description: String?,
     private val designer: List<Designer>?,
+    private val relation: List<Designer>?,
     private val uri: String?,
     private val architecturalStyle: String?,
     private val hasFile: String?,
@@ -21,6 +22,7 @@ data class Building(
     @SerializedName("yname")
     private val yName: List<YName>?,
     private val location: List<Location>?,
+    private val lane: List<Lane>?,
     private val event: List<Event>
 
 )
