@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.buildingrecognition.R
 import com.example.buildingrecognition.RecognitionRepository
 import com.example.buildingrecognition.constant.KEY_ARG_PHOTO_URL
+import com.example.buildingrecognition.model.Recognition
 import com.imurluck.net.LoadCallback
 import kotlinx.android.synthetic.main.dialog_recognition.*
 
@@ -63,10 +64,10 @@ class RecognitionDialogFragment : DialogFragment() {
      */
     private fun startRecognition() {
         recognitionStatusTv.recognising()
-        RecognitionRepository.recognition(photoUrl, object : LoadCallback<String> {
-            override fun loadSuccess(data: String) {
+        RecognitionRepository.recognition(photoUrl, object : LoadCallback<Recognition> {
+            override fun loadSuccess(data: Recognition) {
                 shownImg.cancelScanAnimation()
-                recognitionStatusTv.recogniseSuccess(data)
+                recognitionStatusTv.recogniseSuccess(data.buildStyle)
             }
 
             override fun loadFailed(errorMessage: String) {

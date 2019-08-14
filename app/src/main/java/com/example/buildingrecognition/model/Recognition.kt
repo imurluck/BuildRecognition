@@ -8,8 +8,8 @@ import com.google.gson.annotations.SerializedName
  * create at 2019-08-11
  */
 data class Recognition(
-    private val buildStyle: String,
+    val buildStyle: String,
     @SerializedName("styleinfo")
-    private val styleInfo: String?,
-    private val buildings: List<Building>?
+    val styleInfo: String?,
+    val buildings: List<Building>?
 )

@@ -1,5 +1,6 @@
 package com.example.buildingrecognition
 
+import com.example.buildingrecognition.model.Recognition
 import com.imurluck.net.HttpHelper
 import com.imurluck.net.HttpUtil
 import com.imurluck.net.LoadCallback
@@ -16,7 +17,7 @@ object RecognitionRepository {
 
     private const val KEY_PHOTO_FILE = "document"
 
-    fun recognition(photoUrl: String, loadCallback: LoadCallback<String>) {
+    fun recognition(photoUrl: String, loadCallback: LoadCallback<Recognition>) {
         HttpHelper.getInstance().post(Constant.URL_RECOGNITION, HashMap(),
             loadCallback, TAG_RECOGNITION, HttpUtil.createFilePart(KEY_PHOTO_FILE, photoUrl))
     }
